@@ -9,36 +9,41 @@
 using TaskFunction = void (*)();
 
 class TaskBase {
-public:
-  TaskBase(TaskFunction entry, uint8_t priority);
-  ~TaskBase();
+  public:
+    TaskBase(TaskFunction entry, uint8_t priority);
+    ~TaskBase();
 
-  enum class State : uint8_t {
-    READY,
-    RUNNING,
-    BLOCKED,
-    SUSPENDED
-  };
+    enum class State : uint8_t {
+      READY,
+      RUNNING,
+      BLOCKED,
+      SUSPENDED
+    };
 
-  State getState() const;
+    State getState() const;
 
-protected:
-  uint8_t priority_;
-  void *stackPtr_;
-  TaskBase *next_;
-  TaskFunction entry_;
+    TaskBase* getNext() const;
+    void setNext(TaskBase* next);
 
-private:
-  volatile State currentState_;
+    uint8_t getPriority() const;
+
+  protected:
+    uint8_t priority_;
+    void *stackPtr_;
+    TaskBase *next_;
+    TaskFunction entry_;
+
+  private:
+    volatile State currentState_;
 };
 
 template <size_t N> class Task : public TaskBase {
-public:
-  Task(TaskFunction entry, uint8_t priority);
-  ~Task();
+  public:
+    Task(TaskFunction entry, uint8_t priority);
+    ~Task();
 
-private:
-  alignas(8) std::array<std::byte, N> stackMemory_;
+  private:
+    alignas(8) std::array<std::byte, N> stackMemory_;
 };
 
 template <size_t N> 
