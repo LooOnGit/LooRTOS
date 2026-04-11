@@ -10,7 +10,7 @@ using TaskFunction = void (*)();
 
 class TaskBase {
 public:
-  TaskBase();
+  TaskBase(TaskFunction entry, uint8_t priority);
   ~TaskBase();
 
   enum class State : uint8_t {
@@ -34,11 +34,18 @@ private:
 
 template <size_t N> class Task : public TaskBase {
 public:
-  Task();
+  Task(TaskFunction entry, uint8_t priority);
   ~Task();
 
 private:
   alignas(8) std::array<std::byte, N> stackMemory_;
 };
+
+template <size_t N> 
+Task<N>::Task(TaskFunction entry, uint8_t priority)
+    : TaskBase(entry, priority) {}
+
+template <size_t N> 
+Task<N>::~Task() {}
 
 #endif // KERNEL_CORE_TASK_HPP
