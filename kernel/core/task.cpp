@@ -31,3 +31,7 @@ TaskBase* TaskBase::getNext() const {
 void TaskBase::setNext(TaskBase* next) {
   next_ = next;
 }
+
+TaskFunction TaskBase::getEntry() const {
+  return entry_;
+}

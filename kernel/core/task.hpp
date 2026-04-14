@@ -24,6 +24,7 @@ class TaskBase {
 
     TaskBase* getNext() const;
     void setNext(TaskBase* next);
+    TaskFunction getEntry() const;
 
     uint8_t getPriority() const;
 
