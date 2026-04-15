@@ -20,13 +20,15 @@ Scheduler& Kernel::getScheduler() {
 
 void Kernel::start() {
     if(running_) return;
-    running_ = true;
+
     TaskBase* firstTask = scheduler_.getNextTask();
 
     if(firstTask != nullptr) {
-        while(running_) {
-            
-        }
+        running_ = true;
+        firstTask->getEntry()(); 
     }
-    firstTask->getEntry()();
+    
+    while(true) {
+        
+    }
 }
